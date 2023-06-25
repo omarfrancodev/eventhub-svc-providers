@@ -23,7 +23,7 @@ export class PostgreProviderRepository implements IProviderRepository {
     }
 
     async findById(providerId: number): Promise<Provider | null> {
-        return this.repository.findOneBy({ provider_id: providerId });
+        return this.repository.findOneBy({ providerId: providerId });
     }
 
     async findAll(): Promise<Provider[]> {
