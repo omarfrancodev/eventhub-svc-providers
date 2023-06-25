@@ -21,6 +21,7 @@ export class CreateProviderController {
       }
       
       const provider = new Provider();
+      provider.userId = formData.userId;
       provider.name = formData.name;
       provider.description = formData.description;
       provider.phoneNumber = formData.phoneNumber;
