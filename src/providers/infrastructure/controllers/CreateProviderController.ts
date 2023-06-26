@@ -3,7 +3,7 @@ import { Provider } from '../../domain/Provider';
 import { CreateProviderUseCase } from '../../application/CreateProviderUseCase';
 
 export class CreateProviderController {
-  constructor(private readonly createProviderUseCase: CreateProviderUseCase) {}
+  constructor(private readonly createProviderUseCase: CreateProviderUseCase) { }
 
   async run(req: Request, res: Response): Promise<Response> {
     try {
@@ -12,10 +12,12 @@ export class CreateProviderController {
       const urlImages: string[] = [];
 
       for (const image of images) {
-        const imagePath = image.location; 
+        const imagePath = `src/uploads/${image.filename}`;
         urlImages.push(imagePath);
+        // const imagePath = image.location;
+        // urlImages.push(imagePath);
       }
-      
+
       const provider = new Provider();
       provider.userId = formData.userId;
       provider.name = formData.name;
@@ -27,7 +29,7 @@ export class CreateProviderController {
       provider.hoursAvailability = formData.hoursAvailability;
       provider.categories = formData.categories;
       provider.urlImages = urlImages;
-      
+
       const createdProvider = await this.createProviderUseCase.run(provider);
 
       return res.status(201).json(createdProvider);
