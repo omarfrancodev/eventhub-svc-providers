@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Provider } from '../../domain/Provider';
 import { CreateProviderUseCase } from '../../application/CreateProviderUseCase';
-import * as fs from 'fs';
 
 export class CreateProviderController {
   constructor(private readonly createProviderUseCase: CreateProviderUseCase) {}
@@ -9,15 +8,12 @@ export class CreateProviderController {
   async run(req: Request, res: Response): Promise<Response> {
     try {
       const formData = req.body;
-      const images: Express.Multer.File[] = req.files as Express.Multer.File[];
+      const images: Express.MulterS3.File[] = req.files as Express.MulterS3.File[];
       const urlImages: string[] = [];
-      
+
       for (const image of images) {
-        const imagePath = `src/uploads/${image.filename}`;
-        console.log("provider")
+        const imagePath = image.location; 
         urlImages.push(imagePath);
-        
-        await fs.promises.rename(image.path, imagePath);
       }
       
       const provider = new Provider();
