@@ -131,7 +131,11 @@ dist
 
 # Docker
 Dockerfile
+docker-compose.yml
 
 # Files
-
 /src/uploads
+
+# builds
+/build
+*.png
