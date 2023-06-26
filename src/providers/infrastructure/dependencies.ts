@@ -22,9 +22,6 @@ export const createProviderController = new CreateProviderController(createProvi
 const deleteProviderUseCase = new DeleteProviderUseCase(postgreProviderRepository);
 export const deleteProviderController = new DeleteProviderController(deleteProviderUseCase);
 
-const updateProviderUseCase = new UpdateProviderUseCase(postgreProviderRepository);
-export const updateProviderController = new UpdateProviderController(updateProviderUseCase);
-
 const findAllProviderUseCase = new FindAllProvidersUseCase(postgreProviderRepository);
 export const findAllProviderController = new FindAllProviderController(findAllProviderUseCase);
 
@@ -33,3 +30,6 @@ export const findByIdProviderController = new FindByIdProviderController(findByI
 
 const findByCategoryProvidersUseCase = new FindByCategoryProvidersUseCase(postgreProviderRepository);
 export const findByCategoryProvidersController = new FindByCategoryProviderController(findByCategoryProvidersUseCase);
+
+const updateProviderUseCase = new UpdateProviderUseCase(postgreProviderRepository);
+export const updateProviderController = new UpdateProviderController(updateProviderUseCase, findByIdProviderUseCase);
