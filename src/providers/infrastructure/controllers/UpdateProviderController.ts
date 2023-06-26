@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UpdateProviderUseCase } from '../../application/UpdateProviderUseCase';
 import { FindByIdProviderUseCase } from '../../application/FindByIdProviderUseCase';
+import * as fs from 'fs';
 
 export class UpdateProviderController {
   constructor(
@@ -21,8 +22,12 @@ export class UpdateProviderController {
       if (existingProvider) {
         if (images.length > 0) {
           for (const image of images) {
-            const imagePath = image.location;
+            const imagePath = `src/uploads/${image.filename}`;
             urlImages.push(imagePath);
+            // const imagePath = image.location;
+            // urlImages.push(imagePath);
+
+            await fs.promises.rename(image.path, imagePath);
           }
         } else {
           urlImages.push(...existingProvider.urlImages);
