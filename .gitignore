@@ -133,5 +133,7 @@ dist
 Dockerfile
 
 # Files
-
 /src/uploads
+
+# builds
+/build
