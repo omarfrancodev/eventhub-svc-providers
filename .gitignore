@@ -131,6 +131,7 @@ dist
 
 # Docker
 Dockerfile
+docker_compose.yml
 
 # Files
 /src/uploads
