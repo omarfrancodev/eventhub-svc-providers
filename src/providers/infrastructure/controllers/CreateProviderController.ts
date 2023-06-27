@@ -39,7 +39,6 @@ export class CreateProviderController {
       provider.urlImages = urlImages;
 
       const createdProvider = await this.createProviderUseCase.run(provider);
-      console.log(createdProvider.categories);
 
       return res.status(201).json(createdProvider);
     } catch (error) {
