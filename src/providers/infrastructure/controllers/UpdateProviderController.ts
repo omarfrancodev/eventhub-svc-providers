@@ -16,6 +16,8 @@ export class UpdateProviderController {
       const updatedProviderData = req.body;
       const images: Express.MulterS3.File[] = req.files as Express.MulterS3.File[];
       const urlImages: string[] = [];
+      const parsedServices: number[] = [];
+      let servicesId: number[] = [];
 
       const existingProvider = await this.findByIdProviderUseCase.run(providerId);
 
@@ -32,10 +34,24 @@ export class UpdateProviderController {
         } else {
           urlImages.push(...existingProvider.urlImages);
         }
+        if (updatedProviderData.servicesId !== undefined) {
+          if (updatedProviderData.servicesId.length > 0) {
+            for (const service of updatedProviderData.servicesId) {
+              const parsedValue = parseInt(service);
+              const value = isNaN(parsedValue) ? null : parsedValue
+              parsedServices.push(value!);
+              servicesId = parsedServices.filter((service: number | null) => service !== null) || []
+            }
+          }
+        } else {
+          servicesId.push(...existingProvider.servicesId)
+        }
+
         const updatedProvider = {
           ...existingProvider,
           ...updatedProviderData,
           urlImages,
+          servicesId
         };
 
         const result = await this.updateProviderUseCase.run(providerId, updatedProvider);
@@ -45,6 +61,7 @@ export class UpdateProviderController {
         return res.status(404).json({ error: "Provider not found" });
       }
     } catch (error) {
+      console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }

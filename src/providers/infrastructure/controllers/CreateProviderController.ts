@@ -10,12 +10,19 @@ export class CreateProviderController {
       const formData = req.body;
       const images: Express.MulterS3.File[] = req.files as Express.MulterS3.File[];
       const urlImages: string[] = [];
+      const parsedServices: number[] = [];
 
       for (const image of images) {
         const imagePath = `src/uploads/${image.filename}`;
         urlImages.push(imagePath);
         // const imagePath = image.location;
         // urlImages.push(imagePath);
+      }
+
+      for (const service of formData.servicesId) {
+        const parsedValue = parseInt(service);
+        const value = isNaN(parsedValue) ? null : parsedValue
+        parsedServices.push(value!);
       }
 
       const provider = new Provider();
@@ -28,12 +35,15 @@ export class CreateProviderController {
       provider.daysAvailability = formData.daysAvailability;
       provider.hoursAvailability = formData.hoursAvailability;
       provider.categories = formData.categories;
+      provider.servicesId = parsedServices.filter((service: number | null) => service !== null) || [];
       provider.urlImages = urlImages;
 
       const createdProvider = await this.createProviderUseCase.run(provider);
+      console.log(createdProvider.categories);
 
       return res.status(201).json(createdProvider);
     } catch (error) {
+      console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
