@@ -53,6 +53,6 @@ providerRouter.delete('/:id', deleteProviderController.run.bind(deleteProviderCo
 providerRouter.patch('/:id', upload.array("images"), updateProviderController.run.bind(updateProviderController));
 // providerRouter.patch('/:id', uploadS3.array("images"), updateProviderController.run.bind(updateProviderController));
 providerRouter.get('/', findAllProviderController.run.bind(findAllProviderController));
+providerRouter.get('/:categories', findByCategoryProvidersController.run.bind(findByCategoryProvidersController));
 providerRouter.get('/:id', findByIdProviderController.run.bind(findByIdProviderController));
-providerRouter.get('/category/:category', findByCategoryProvidersController.run.bind(findByCategoryProvidersController));
 
