@@ -3,7 +3,7 @@ import { Provider } from '../../domain/Provider';
 import { IProviderRepository } from '../../domain/IProviderRepository';
 import { AppDataSource } from '../data-source';
 
-export class PostgreProviderRepository implements IProviderRepository {
+export class ProviderRepository implements IProviderRepository {
     private repository: Repository<Provider>;
 
     constructor() {
