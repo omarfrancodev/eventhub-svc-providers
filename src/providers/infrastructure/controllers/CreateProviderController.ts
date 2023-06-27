@@ -13,7 +13,7 @@ export class CreateProviderController {
       const parsedServices: number[] = [];
 
       for (const image of images) {
-        const imagePath = `src/uploads/${image.filename}`;
+        const imagePath = `/images-providers/${image.filename}`;
         urlImages.push(imagePath);
         // const imagePath = image.location;
         // urlImages.push(imagePath);

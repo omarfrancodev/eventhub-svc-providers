@@ -37,7 +37,7 @@ export const providerRouter = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "src/uploads/");
+    cb(null, "src/images-providers/");
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -53,6 +53,6 @@ providerRouter.delete('/:id', deleteProviderController.run.bind(deleteProviderCo
 providerRouter.patch('/:id', upload.array("images"), updateProviderController.run.bind(updateProviderController));
 // providerRouter.patch('/:id', uploadS3.array("images"), updateProviderController.run.bind(updateProviderController));
 providerRouter.get('/', findAllProviderController.run.bind(findAllProviderController));
-providerRouter.get('/:categories', findByCategoryProvidersController.run.bind(findByCategoryProvidersController));
 providerRouter.get('/:id', findByIdProviderController.run.bind(findByIdProviderController));
+providerRouter.get('/categories/:categories', findByCategoryProvidersController.run.bind(findByCategoryProvidersController));
 

@@ -40,9 +40,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("uploads"));
 app.use("/providers", providerRouter);
-app.get("/uploads/:filename", (req, res) => {
+app.get("/images-providers/:filename", (req, res) => {
   const filename = req.params.filename;
-  const imagePath = path.join(__dirname, "uploads", filename);
+  const imagePath = path.join(__dirname, "images-providers", filename);
   res.sendFile(imagePath);
 });
 
