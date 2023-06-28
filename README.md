@@ -43,4 +43,4 @@ npm run test
 ```bash
 npm install
 ```
-5. Ejecuta los comandos descritos anteriormente según sea necesario.
+4. Ejecuta los comandos descritos anteriormente según sea necesario.
