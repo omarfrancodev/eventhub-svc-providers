@@ -134,7 +134,7 @@ Dockerfile
 docker-compose.yml
 
 # Files
-/src/uploads
+/src/images-providers
 
 # builds
 /build
