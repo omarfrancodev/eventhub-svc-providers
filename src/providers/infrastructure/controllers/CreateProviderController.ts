@@ -30,16 +30,16 @@ export class CreateProviderController {
       }
 
       const provider = new Provider();
-      provider.userId = formData.userId || null;
-      provider.name = formData.name || null;
-      provider.description = formData.description || null;
-      provider.phoneNumber = formData.phoneNumber || null;
-      provider.email = formData.email || null;
-      provider.address = formData.address || null;
-      provider.daysAvailability = formData.daysAvailability || null;
-      provider.hoursAvailability = formData.hoursAvailability || null;
-      provider.categories = formData.categories || null;
-      provider.servicesId = parsedServices.filter((service: number | null) => service !== null) || null;
+      provider.userId = formData.userId;
+      provider.name = formData.name;
+      provider.description = formData.description;
+      provider.phoneNumber = formData.phoneNumber;
+      provider.email = formData.email;
+      provider.address = formData.address;
+      provider.daysAvailability = formData.daysAvailability;
+      provider.hoursAvailability = formData.hoursAvailability;
+      provider.categories = formData.categories;
+      provider.servicesId = parsedServices.filter((service: number | null) => service !== null) || [];
       provider.urlImages = urlImages;
 
       const createdProvider = await this.createProviderUseCase.run(provider);
