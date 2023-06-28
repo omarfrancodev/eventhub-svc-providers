@@ -12,24 +12,24 @@ import { FindByCategoryProviderController } from "./controllers/FindByCategoryPr
 import { FindByIdProviderController } from "./controllers/FindByIdProviderController";
 import { UpdateProviderController } from "./controllers/UpdateProviderController";
 
-import { PostgreProviderRepository } from "./implementation/PostgreProviderRepository";
+import { ProviderRepository } from "./implementation/ProviderRepository";
 
-const postgreProviderRepository = new PostgreProviderRepository();
+const providerRepository = new ProviderRepository();
 
-const createProviderUseCase = new CreateProviderUseCase(postgreProviderRepository);
+const createProviderUseCase = new CreateProviderUseCase(providerRepository);
 export const createProviderController = new CreateProviderController(createProviderUseCase);
 
-const deleteProviderUseCase = new DeleteProviderUseCase(postgreProviderRepository);
+const deleteProviderUseCase = new DeleteProviderUseCase(providerRepository);
 export const deleteProviderController = new DeleteProviderController(deleteProviderUseCase);
 
-const updateProviderUseCase = new UpdateProviderUseCase(postgreProviderRepository);
-export const updateProviderController = new UpdateProviderController(updateProviderUseCase);
-
-const findAllProviderUseCase = new FindAllProvidersUseCase(postgreProviderRepository);
+const findAllProviderUseCase = new FindAllProvidersUseCase(providerRepository);
 export const findAllProviderController = new FindAllProviderController(findAllProviderUseCase);
 
-const findByIdProviderUseCase = new FindByIdProviderUseCase(postgreProviderRepository);
+const findByIdProviderUseCase = new FindByIdProviderUseCase(providerRepository);
 export const findByIdProviderController = new FindByIdProviderController(findByIdProviderUseCase);
 
-const findByCategoryProvidersUseCase = new FindByCategoryProvidersUseCase(postgreProviderRepository);
+const findByCategoryProvidersUseCase = new FindByCategoryProvidersUseCase(providerRepository);
 export const findByCategoryProvidersController = new FindByCategoryProviderController(findByCategoryProvidersUseCase);
+
+const updateProviderUseCase = new UpdateProviderUseCase(providerRepository);
+export const updateProviderController = new UpdateProviderController(updateProviderUseCase, findByIdProviderUseCase);

@@ -4,7 +4,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 export class Provider extends BaseEntity {
     @PrimaryGeneratedColumn()
     providerId!: number;
-    
+
     @Column()
     userId!: number;
 
@@ -35,9 +35,12 @@ export class Provider extends BaseEntity {
     @Column('simple-array')
     urlImages!: string[];
 
+    @Column('integer', { array: true, nullable: true })
+    servicesId!: number[] | null;
+
     @Column({ default: () => "CURRENT_TIMESTAMP" })
     createdAt!: Date;
-  
+
     @Column({ default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
     updatedAt!: Date;
 }
