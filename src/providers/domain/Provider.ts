@@ -5,38 +5,38 @@ export class Provider extends BaseEntity {
     @PrimaryGeneratedColumn()
     providerId!: number;
 
-    @Column()
-    userId!: number;
+    @Column('integer', { nullable: true })
+    userId!: number | null;
 
-    @Column()
-    name!: string;
+    @Column('varchar', { nullable: true })
+    name!: string | null;
 
-    @Column()
-    description!: string;
+    @Column('varchar', { nullable: true })
+    description!: string | null;
 
-    @Column()
-    phoneNumber!: string;
+    @Column('varchar', { nullable: true })
+    phoneNumber!: string | null;
 
-    @Column()
-    email!: string;
+    @Column('varchar', { nullable: true })
+    email!: string | null;
 
-    @Column()
-    address!: string;
+    @Column('varchar', { nullable: true })
+    address!: string | null;
 
-    @Column('simple-array')
-    daysAvailability!: string[];
+    @Column('simple-array', { nullable: true })
+    daysAvailability!: string[] | null;
 
-    @Column('simple-array')
-    hoursAvailability!: string[];
+    @Column('simple-array', { nullable: true })
+    hoursAvailability!: string[] | null;
 
-    @Column('simple-array')
-    categories!: string[];
+    @Column('simple-array', { nullable: true })
+    categories!: string[] | null;
 
     @Column('simple-array')
     urlImages!: string[];
 
-    @Column("integer", { array: true })
-    servicesId!: number[];
+    @Column('integer', { array: true, nullable: true })
+    servicesId!: number[] | null;
 
     @Column({ default: () => "CURRENT_TIMESTAMP" })
     createdAt!: Date;
