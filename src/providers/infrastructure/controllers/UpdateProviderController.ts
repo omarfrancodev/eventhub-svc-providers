@@ -44,7 +44,9 @@ export class UpdateProviderController {
             }
           }
         } else {
-          servicesId.push(...existingProvider.servicesId)
+          if (existingProvider.servicesId !== null){
+            servicesId.push(...existingProvider.servicesId)
+          }
         }
 
         const updatedProvider = {
