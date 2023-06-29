@@ -19,14 +19,14 @@ const providerRepository = new ProviderRepository();
 const createProviderUseCase = new CreateProviderUseCase(providerRepository);
 export const createProviderController = new CreateProviderController(createProviderUseCase);
 
+const findByIdProviderUseCase = new FindByIdProviderUseCase(providerRepository);
+export const findByIdProviderController = new FindByIdProviderController(findByIdProviderUseCase);
+
 const deleteProviderUseCase = new DeleteProviderUseCase(providerRepository);
-export const deleteProviderController = new DeleteProviderController(deleteProviderUseCase);
+export const deleteProviderController = new DeleteProviderController(deleteProviderUseCase, findByIdProviderUseCase);
 
 const findAllProviderUseCase = new FindAllProvidersUseCase(providerRepository);
 export const findAllProviderController = new FindAllProviderController(findAllProviderUseCase);
-
-const findByIdProviderUseCase = new FindByIdProviderUseCase(providerRepository);
-export const findByIdProviderController = new FindByIdProviderController(findByIdProviderUseCase);
 
 const findByCategoryProvidersUseCase = new FindByCategoryProvidersUseCase(providerRepository);
 export const findByCategoryProvidersController = new FindByCategoryProviderController(findByCategoryProvidersUseCase);
