@@ -56,7 +56,7 @@ export class UpdateProviderController {
           servicesId
         };
 
-        const result = await this.updateProviderUseCase.run(providerId, updatedProvider);
+        const result = await this.updateProviderUseCase.run(existingProvider, updatedProvider);
 
         return res.status(200).json(result);
       } else {
