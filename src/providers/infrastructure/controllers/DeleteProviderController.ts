@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { DeleteProviderUseCase } from '../../application/DeleteProviderUseCase';
 import { FindByIdProviderUseCase } from '../../application/FindByIdProviderUseCase';
+import * as fs from 'fs';
 
 export class DeleteProviderController {
   constructor(
@@ -17,7 +18,14 @@ export class DeleteProviderController {
       if (!provider) {
         return res.status(404).json({error: 'Provider not found'});
       }
+      const imagePaths = provider.urlImages;
       await this.deleteProviderUseCase.run(provider);
+
+      if (imagePaths.length > 0) {
+        for(const path in imagePaths){
+          await fs.promises.unlink(path);
+        }
+      }
 
       return res.status(200).json({ message: 'Provider deleted successfully' });
     } catch (error) {
