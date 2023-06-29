@@ -14,6 +14,7 @@ import {
   findByIdProviderController,
   findByCategoryProvidersController
 } from './dependencies';
+import path from 'path';
 
 export const providerRouter = express.Router();
 
@@ -41,7 +42,8 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix + "." + file.originalname);
+    const fileExtension = path.extname(file.originalname);
+    cb(null, file.fieldname + "-" + uniqueSuffix + fileExtension);
   },
 });
 
