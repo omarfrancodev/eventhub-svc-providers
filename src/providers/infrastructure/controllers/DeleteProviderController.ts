@@ -20,13 +20,13 @@ export class DeleteProviderController {
       }
       const imagePaths = provider.urlImages;
       await this.deleteProviderUseCase.run(provider);
-
+      
       if (imagePaths.length > 0) {
-        for(const path in imagePaths){
+        for(const path of imagePaths){
           await fs.promises.unlink(path);
         }
       }
-
+      
       return res.status(200).json({ message: 'Provider deleted successfully' });
     } catch (error) {
       console.error(error);
