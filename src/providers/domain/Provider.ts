@@ -36,7 +36,10 @@ export class Provider extends BaseEntity {
     urlImages!: string[];
 
     @Column('integer', { array: true, nullable: true })
-    servicesId!: number[] | null;
+    servicesId: (number | null)[] = [];
+    
+    @Column('integer', { array: true, nullable: true })
+    eventsId: (number | null)[] = [];
 
     @Column({ default: () => "CURRENT_TIMESTAMP" })
     createdAt!: Date;

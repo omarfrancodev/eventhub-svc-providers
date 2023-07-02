@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UpdateProviderUseCase } from '../../application/UpdateProviderUseCase';
 import { FindByIdProviderUseCase } from '../../application/FindByIdProviderUseCase';
 import * as fs from 'fs';
+import { parseArrayValues } from './CreateProviderController';
 
 export class UpdateProviderController {
   constructor(
@@ -16,8 +17,6 @@ export class UpdateProviderController {
       const updatedProviderData = req.body;
       const images: Express.MulterS3.File[] = req.files as Express.MulterS3.File[];
       const urlImages: string[] = [];
-      const parsedServices: number[] = [];
-      let servicesId: number[] = [];
 
       const existingProvider = await this.findByIdProviderUseCase.run(providerId);
 
@@ -34,26 +33,22 @@ export class UpdateProviderController {
         } else {
           urlImages.push(...existingProvider.urlImages);
         }
-        if (updatedProviderData.servicesId !== undefined) {
-          if (updatedProviderData.servicesId.length > 0) {
-            for (const service of updatedProviderData.servicesId) {
-              const parsedValue = parseInt(service);
-              const value = isNaN(parsedValue) ? null : parsedValue
-              parsedServices.push(value!);
-              servicesId = parsedServices.filter((service: number | null) => service !== null) || []
-            }
-          }
-        } else {
-          if (existingProvider.servicesId !== null){
-            servicesId.push(...existingProvider.servicesId)
-          }
-        }
+
+        let servicesId = existingProvider.servicesId;
+        let eventsId = existingProvider.servicesId;
+
+        const newServicesId = this.validate(updatedProviderData.servicesId);
+        const newEventsId = this.validate(updatedProviderData.eventsId);
+
+        servicesId = [...new Set(servicesId.concat(newServicesId))];
+        eventsId = [...new Set(eventsId.concat(newEventsId))];  
 
         const updatedProvider = {
           ...existingProvider,
           ...updatedProviderData,
           urlImages,
-          servicesId
+          servicesId,
+          eventsId
         };
 
         const result = await this.updateProviderUseCase.run(existingProvider, updatedProvider);
@@ -66,5 +61,13 @@ export class UpdateProviderController {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
     }
+  }
+
+  private validate(array: any) {
+    if (array !== undefined){
+      const parsedArray = parseArrayValues(array);
+      return parsedArray
+    }
+    return []
   }
 }
