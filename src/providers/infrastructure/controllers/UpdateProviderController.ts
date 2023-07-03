@@ -17,19 +17,37 @@ export class UpdateProviderController {
       const updatedProviderData = req.body;
       const images: Express.MulterS3.File[] = req.files as Express.MulterS3.File[];
       const urlImages: string[] = [];
+      const handleUrlImages: string[] = [];
 
       const existingProvider = await this.findByIdProviderUseCase.run(providerId);
 
       if (existingProvider) {
         if (images.length > 0) {
           for (const image of images) {
-            const imagePath = `/images-providers/${image.filename}`;
-            urlImages.push(imagePath);
+            const imagePath = `src/images-providers/${image.filename}`;
+            handleUrlImages.push(imagePath);
+            const realImagePath = `/images-providers/${imagePath.split('/').pop()}`;
+            urlImages.push(realImagePath);
             // const imagePath = image.location;
             // urlImages.push(imagePath);
 
             await fs.promises.rename(image.path, imagePath);
           }
+          const existingImages = existingProvider.urlImages;
+          const imagesToRemove = existingImages.filter(
+            (existingImage) => !handleUrlImages.includes(existingImage)
+          );
+          imagesToRemove.forEach((image) => {
+            const imagePath = `src/${image}`;
+
+            fs.unlink(imagePath, (err) => {
+              if (err) {
+                console.error(`Error al eliminar la imagen ${image}: ${err}`);
+              } else {
+                console.log(`Imagen ${image} eliminada correctamente`);
+              }
+            });
+          });
         } else {
           urlImages.push(...existingProvider.urlImages);
         }
@@ -41,7 +59,7 @@ export class UpdateProviderController {
         const newEventsId = this.validate(updatedProviderData.eventsId);
 
         servicesId = [...new Set(servicesId.concat(newServicesId))];
-        eventsId = [...new Set(eventsId.concat(newEventsId))];  
+        eventsId = [...new Set(eventsId.concat(newEventsId))];
 
         const updatedProvider = {
           ...existingProvider,
@@ -64,7 +82,7 @@ export class UpdateProviderController {
   }
 
   private validate(array: any) {
-    if (array !== undefined){
+    if (array !== undefined) {
       const parsedArray = parseArrayValues(array);
       return parsedArray
     }
