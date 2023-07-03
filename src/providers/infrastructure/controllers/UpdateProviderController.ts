@@ -16,8 +16,8 @@ export class UpdateProviderController {
       const providerId = Number(req.params.id);
       const updatedProviderData = req.body;
       const images: Express.MulterS3.File[] = req.files as Express.MulterS3.File[];
-      const urlImages: string[] = [];
-      const handleUrlImages: string[] = [];
+      let urlImages: string[] = [];
+      let imagesToKeep: string[] = [];
 
       const existingProvider = await this.findByIdProviderUseCase.run(providerId);
 
@@ -25,8 +25,7 @@ export class UpdateProviderController {
         if (images.length > 0) {
           for (const image of images) {
             const imagePath = `src/images-providers/${image.filename}`;
-            handleUrlImages.push(imagePath);
-            const realImagePath = `/images-providers/${imagePath.split('/').pop()}`;
+            const realImagePath = `${imagePath.substring(imagePath.indexOf('/'))}`;
             urlImages.push(realImagePath);
             // const imagePath = image.location;
             // urlImages.push(imagePath);
@@ -34,9 +33,13 @@ export class UpdateProviderController {
             await fs.promises.rename(image.path, imagePath);
           }
           const existingImages = existingProvider.urlImages;
+          if (updatedProviderData.urlImages.length > 0) { imagesToKeep = updatedProviderData.urlImages.split(','); }
+
           const imagesToRemove = existingImages.filter(
-            (existingImage) => !handleUrlImages.includes(existingImage)
+            (existingImage: string) => !imagesToKeep.includes(existingImage)
           );
+          urlImages = urlImages.concat(imagesToKeep);
+
           imagesToRemove.forEach((image) => {
             const imagePath = `src/${image}`;
 
