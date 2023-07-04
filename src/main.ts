@@ -38,7 +38,6 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("uploads"));
 app.use("/providers", providerRouter);
 app.get("/images-providers/:filename", (req, res) => {
   const filename = req.params.filename;
