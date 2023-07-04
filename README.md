@@ -34,6 +34,8 @@ npm run test
 ```bash
   npm run start
   ```
+## Carpetas
+Debe crearse una carpeta en la direccion `/src` con el nombre `images-providers`.
 
 ### Instalación
 
