@@ -39,7 +39,7 @@ Debe crearse una carpeta en la direccion `/src` con el nombre `images-providers`
 
 ### Instalación
 
-1. Clona este repositorio.
+1. Crea un nuevo repositorio a partir de este template.
 2. Navega hasta el directorio raíz del proyecto.
 3. Ejecuta `npm install` para instalar las dependencias.
 ```bash
