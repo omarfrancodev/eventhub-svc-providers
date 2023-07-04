@@ -10,8 +10,7 @@ export class CreateProviderController {
       const formData = req.body;
       const images: Express.MulterS3.File[] = req.files as Express.MulterS3.File[];
       const urlImages: string[] = [];
-      const servicesId = parseArrayValues(formData.servicesId);
-      const eventsId = parseArrayValues(formData.eventsId);
+      let eventsId: number[] = [];
 
       if (Array.isArray(images)) {
         for (const image of images) {
@@ -32,7 +31,6 @@ export class CreateProviderController {
       provider.daysAvailability = formData.daysAvailability;
       provider.hoursAvailability = formData.hoursAvailability;
       provider.categories = formData.categories;
-      provider.servicesId = servicesId;
       provider.eventsId = eventsId;
       provider.urlImages = urlImages;
 
@@ -46,13 +44,3 @@ export class CreateProviderController {
   }
 }
 
-export function parseArrayValues(arr: any){
-   const arrayToParse = arr.split(',').map((item: string) => {
-    const parsedValue = parseInt(item.trim());
-    return isNaN(parsedValue) ? null : parsedValue;
-  });
-  
-  const parsedArray = arrayToParse.filter((item: number | null) => item !== null) || [];
-
-  return parsedArray;
-}

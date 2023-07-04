@@ -34,9 +34,6 @@ export class Provider extends BaseEntity {
 
     @Column('simple-array')
     urlImages!: string[];
-
-    @Column('integer', { array: true, nullable: true })
-    servicesId: (number | null)[] = [];
     
     @Column('integer', { array: true, nullable: true })
     eventsId: (number | null)[] = [];

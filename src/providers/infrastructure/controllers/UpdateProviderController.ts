@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { UpdateProviderUseCase } from '../../application/UpdateProviderUseCase';
 import { FindByIdProviderUseCase } from '../../application/FindByIdProviderUseCase';
 import * as fs from 'fs';
-import { parseArrayValues } from './CreateProviderController';
 
 export class UpdateProviderController {
   constructor(
@@ -29,7 +28,6 @@ export class UpdateProviderController {
             urlImages.push(realImagePath);
             // const imagePath = image.location;
             // urlImages.push(imagePath);
-
             await fs.promises.rename(image.path, imagePath);
           }
           const existingImages = existingProvider.urlImages;
@@ -55,20 +53,14 @@ export class UpdateProviderController {
           urlImages.push(...existingProvider.urlImages);
         }
 
-        let servicesId = existingProvider.servicesId;
-        let eventsId = existingProvider.servicesId;
-
-        const newServicesId = this.validate(updatedProviderData.servicesId);
+        let eventsId = existingProvider.eventsId;
         const newEventsId = this.validate(updatedProviderData.eventsId);
-
-        servicesId = [...new Set(servicesId.concat(newServicesId))];
         eventsId = [...new Set(eventsId.concat(newEventsId))];
 
         const updatedProvider = {
           ...existingProvider,
           ...updatedProviderData,
           urlImages,
-          servicesId,
           eventsId
         };
 
@@ -86,7 +78,11 @@ export class UpdateProviderController {
 
   private validate(array: any) {
     if (array !== undefined) {
-      const parsedArray = parseArrayValues(array);
+      const arrayToParse = array.split(',').map((item: string) => {
+        const parsedValue = parseInt(item.trim());
+        return isNaN(parsedValue) ? null : parsedValue;
+      });
+      const parsedArray = arrayToParse.filter((item: number | null) => item !== null) || [];
       return parsedArray
     }
     return []
