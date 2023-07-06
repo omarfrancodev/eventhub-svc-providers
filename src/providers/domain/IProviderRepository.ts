@@ -7,4 +7,5 @@ export interface IProviderRepository {
   findById(providerId: number): Promise<Provider | null>;
   findAll(): Promise<Provider[]>;
   findByCategory(category: string): Promise<Provider[]>;
+  findByUserId(userId: number): Promise<Provider | null>;
 }

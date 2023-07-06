@@ -25,7 +25,7 @@ export class ProviderRepository implements IProviderRepository {
     async findById(providerId: number): Promise<Provider | null> {
         return this.repository.findOneBy({ providerId: providerId });
     }
-
+    
     async findAll(): Promise<Provider[]> {
         return this.repository.find();
     }
@@ -35,5 +35,9 @@ export class ProviderRepository implements IProviderRepository {
             where: { categories: Like(`%${category}%`) },
         });
         return providers;
+    }
+    
+    async findByUserId(userId: number): Promise<Provider | null> {
+        return await this.repository.findOneBy({ userId: userId });
     }
 }
