@@ -35,7 +35,7 @@ npm run test
   npm run start
   ```
 ## Carpetas
-Debe crearse una carpeta en la direccion `/src` con el nombre `images-providers`.
+Deben crearse dos carpetas en la direccion `/src` con los nombres `images-providers` y `logs`.
 
 ### Instalación
 
