@@ -21,16 +21,36 @@ export class UpdateProviderController {
             const updatedProviderData = req.body;
             const images: Express.MulterS3.File[] = req.files as Express.MulterS3.File[];
             let urlImages: string[] = [];
+            let imagesToKeep: string[] = [];
 
             const existingProvider = await this.findByIdProviderUseCase.run(providerId);
 
             if (!existingProvider) {
                 return res.status(404).json({ error: "Provider not found" });
             }
+
+            const existingImages = existingProvider.urlImages;
+            if (updatedProviderData.urlImages !== undefined && updatedProviderData.urlImages.length > 0) { imagesToKeep = updatedProviderData.urlImages.split(','); }
+
+            const imagesToRemove = existingImages.filter(
+                (existingImage: string) => !imagesToKeep.includes(existingImage)
+            );
+            urlImages = urlImages.concat(imagesToKeep);
+
+            const unlinkPromises = imagesToRemove.map(async image => {
+                const imagePath = `src/${image}`;
+                try {
+                    await fs.promises.unlink(imagePath);
+                    console.log(`Imagen ${image} eliminada correctamente`);
+                } catch (err: any) {
+                    console.error(`Error al eliminar la imagen ${image}: ${err}`);
+                    saveLogFile(err);
+                }
+            });
+            await Promise.all(unlinkPromises);
+
             if (images.length > 0) {
                 urlImages = await this.manageImages(images, urlImages, existingProvider, updatedProviderData);
-            } else {
-                urlImages.push(...existingProvider.urlImages);
             }
 
             let eventsId = existingProvider.eventsId;
@@ -66,7 +86,6 @@ export class UpdateProviderController {
         return []
     }
     private async manageImages(images: Express.MulterS3.File[], urlImages: string[], existingProvider: Provider, updatedProviderData: any) {
-        let imagesToKeep: string[] = [];
         const renamePromises = images.map(image => {
             const filename = `src/images-providers/${image.filename}`;
             const imagePath = `${filename.substring(filename.indexOf('/'))}`;
@@ -74,27 +93,6 @@ export class UpdateProviderController {
             return fs.promises.rename(image.path, filename);
         });
         await Promise.all(renamePromises);
-
-        const existingImages = existingProvider.urlImages;
-        if (updatedProviderData.urlImages.length > 0) { imagesToKeep = updatedProviderData.urlImages.split(','); }
-
-        const imagesToRemove = existingImages.filter(
-            (existingImage: string) => !imagesToKeep.includes(existingImage)
-        );
-        urlImages = urlImages.concat(imagesToKeep);
-
-        const unlinkPromises = imagesToRemove.map(async image => {
-            const imagePath = `src/${image}`;
-            try {
-                await fs.promises.unlink(imagePath);
-                console.log(`Imagen ${image} eliminada correctamente`);
-            } catch (err: any) {
-                console.error(`Error al eliminar la imagen ${image}: ${err}`);
-                saveLogFile(err);
-            }
-        });
-        await Promise.all(unlinkPromises);
-
         return urlImages;
     }
 }
