@@ -1,24 +1,26 @@
 import { Request, Response } from 'express';
 import { Provider } from '../../domain/Provider';
 import { CreateProviderUseCase } from '../../application/CreateProviderUseCase';
+import { validationResult } from 'express-validator';
+import saveLogFile from '../LogsErrorControl';
 
 export class CreateProviderController {
   constructor(private readonly createProviderUseCase: CreateProviderUseCase) { }
 
   async run(req: Request, res: Response): Promise<Response> {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: 'Invalid input data' });
+    }
     try {
       const formData = req.body;
       const images: Express.MulterS3.File[] = req.files as Express.MulterS3.File[];
       const urlImages: string[] = [];
       let eventsId: number[] = [];
 
-      if (Array.isArray(images)) {
-        for (const image of images) {
-          const imagePath = `/images-providers/${image.filename}`;
-          urlImages.push(imagePath);
-          // const imagePath = image.location;
-          // urlImages.push(imagePath);
-        }
+      for (const image of images) {
+        const imagePath = `/images-providers/${image.filename}`;
+        urlImages.push(imagePath);
       }
 
       const provider = new Provider();
@@ -37,8 +39,9 @@ export class CreateProviderController {
       const createdProvider = await this.createProviderUseCase.run(provider);
 
       return res.status(201).json(createdProvider);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      saveLogFile(error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   }

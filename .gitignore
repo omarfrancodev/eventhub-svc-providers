@@ -139,3 +139,6 @@ docker-compose.yml
 # builds
 /build
 *.png
+
+# Convetional Commits
+.vscode

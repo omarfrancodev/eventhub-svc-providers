@@ -4,6 +4,7 @@ import { FindAllProvidersUseCase } from "../application/FindAllProviderUseCase";
 import { FindByCategoryProvidersUseCase } from "../application/FindByCategoryProvidersUseCase";
 import { FindByIdProviderUseCase } from "../application/FindByIdProviderUseCase";
 import { UpdateProviderUseCase } from "../application/UpdateProviderUseCase";
+import { FindByUserIdUseCase } from "../application/FindByUserIdUseCase";
 
 import { CreateProviderController } from "./controllers/CreateProviderController";
 import { DeleteProviderController } from "./controllers/DeleteProviderController";
@@ -11,6 +12,7 @@ import { FindAllProviderController } from "./controllers/FindAllProviderControll
 import { FindByCategoryProviderController } from "./controllers/FindByCategoryProvidersController";
 import { FindByIdProviderController } from "./controllers/FindByIdProviderController";
 import { UpdateProviderController } from "./controllers/UpdateProviderController";
+import { FindByUserIdController } from "./controllers/FindbyUserIdController";
 
 import { ProviderRepository } from "./implementation/ProviderRepository";
 
@@ -33,3 +35,6 @@ export const findByCategoryProvidersController = new FindByCategoryProviderContr
 
 const updateProviderUseCase = new UpdateProviderUseCase(providerRepository);
 export const updateProviderController = new UpdateProviderController(updateProviderUseCase, findByIdProviderUseCase);
+
+const findByUserIdUseCase = new FindByUserIdUseCase(providerRepository);
+export const findByUserIdController = new FindByUserIdController(findByUserIdUseCase);
