@@ -38,6 +38,9 @@ export class Provider extends BaseEntity {
     @Column('integer', { array: true, nullable: true })
     eventsId: (number | null)[] = [];
 
+    @Column('double precision', { array: true, nullable: true })
+    location: (number | null)[] = [];
+
     @Column({ default: () => "CURRENT_TIMESTAMP" })
     createdAt!: Date;
 
