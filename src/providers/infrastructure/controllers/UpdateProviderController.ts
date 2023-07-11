@@ -54,14 +54,17 @@ export class UpdateProviderController {
             }
 
             let eventsId = existingProvider.eventsId;
-            const newEventsId = this.validate(updatedProviderData.eventsId);
+            const newEventsId = this.validate(updatedProviderData.eventsId, "id");
             eventsId = [...new Set(eventsId.concat(newEventsId))];
+            
+            const location = this.validate(updatedProviderData.location, "location");
 
             const updatedProvider = {
                 ...existingProvider,
                 ...updatedProviderData,
                 urlImages,
-                eventsId
+                eventsId,
+                location
             };
 
             const result = await this.updateProviderUseCase.run(existingProvider, updatedProvider);
@@ -74,12 +77,20 @@ export class UpdateProviderController {
         }
     }
 
-    private validate(array: any) {
+    public validate(array: any, type: string) {
         if (array !== undefined) {
-            const arrayToParse = array.split(',').map((item: string) => {
-                const parsedValue = parseInt(item.trim());
-                return isNaN(parsedValue) ? null : parsedValue;
-            });
+            let arrayToParse = [];
+            if (type === 'id') {
+                arrayToParse = array.split(',').map((item: string) => {
+                    const parsedValue = parseInt(item.trim());
+                    return isNaN(parsedValue) ? null : parsedValue;
+                });
+            } else if (type === 'location') {
+                arrayToParse = array.split(',').map((item: string) => {
+                    const parsedValue = parseFloat(item.trim());
+                    return isNaN(parsedValue) ? null : parsedValue;
+                });
+            }
             const parsedArray = arrayToParse.filter((item: number | null) => item !== null) || [];
             return parsedArray
         }
