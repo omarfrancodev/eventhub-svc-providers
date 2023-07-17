@@ -3,6 +3,12 @@ import bodyParser from "body-parser";
 
 import { providerRouter } from "./providers/infrastructure/ProviderRouter";
 import path from "path";
+import moment from 'moment';
+import 'moment-timezone';
+
+moment.tz.setDefault('America/Mexico_City');
+const currentDateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+console.log(currentDateTime);
 
 const app = express();
 
