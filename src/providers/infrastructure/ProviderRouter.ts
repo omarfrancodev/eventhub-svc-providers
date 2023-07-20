@@ -33,6 +33,6 @@ providerRouter.delete('/:id', deleteProviderController.run.bind(deleteProviderCo
 providerRouter.patch('/:id', upload.array("images"), updateProviderController.run.bind(updateProviderController));
 providerRouter.get('/', findAllProviderController.run.bind(findAllProviderController));
 providerRouter.get('/:id', findByIdProviderController.run.bind(findByIdProviderController));
-providerRouter.get('/categories/:categories', findByCategoryProvidersController.run.bind(findByCategoryProvidersController));
+providerRouter.post('/categories/', findByCategoryProvidersController.run.bind(findByCategoryProvidersController));
 providerRouter.get('/user/:id', findByUserIdController.run.bind(findByUserIdController));
 
