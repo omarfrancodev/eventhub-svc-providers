@@ -10,13 +10,12 @@ export class FindByCategoryProviderController {
 
   async run(req: Request, res: Response): Promise<Response> {
     try {
-      const categories: string[] = (req.params.categories?.toString() ?? "").split(",");
-      const sanitizedCategories = categories.map((category) => category.trim());
+      const categories = req.body.categories;
       
       const uniqueProviders: Provider[] = [];
       const providerIds: Set<number> = new Set();
 
-      for (const category of sanitizedCategories) {
+      for (const category of categories) {
         const providersByCategory = await this.findByCategoryProvidersUseCase.run(category);
         for (const provider of providersByCategory) {
           if (!providerIds.has(provider.providerId)) {
