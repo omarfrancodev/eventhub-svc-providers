@@ -53,9 +53,8 @@ export class UpdateProviderController {
                 urlImages = await this.manageImages(images, urlImages, existingProvider, updatedProviderData);
             }
 
-            let eventsId = existingProvider.eventsId;
-            const newEventsId = this.validate(updatedProviderData.eventsId, "id");
-            eventsId = [...new Set(eventsId.concat(newEventsId))];
+            
+            const eventsId = this.validate(updatedProviderData.eventsId, "id");
             
             const location = this.validate(updatedProviderData.location, "location");
 
