@@ -56,7 +56,8 @@ export class UpdateProviderController {
             
             const eventsId = this.validate(updatedProviderData.eventsId, "id");
             
-            const location = this.validate(updatedProviderData.location, "location");
+            let location = this.validate(updatedProviderData.location, "location");
+            location = (location.length > 0) ? location : existingProvider.location;
 
             const updatedProvider = {
                 ...existingProvider,
