@@ -15,6 +15,7 @@ import { UpdateProviderController } from "./controllers/UpdateProviderController
 import { FindByUserIdController } from "./controllers/FindbyUserIdController";
 
 import { ProviderRepository } from "./implementation/ProviderRepository";
+import { FindByIdsController } from "./controllers/FindByProviderIdsController";
 
 const providerRepository = new ProviderRepository();
 
@@ -38,3 +39,5 @@ export const updateProviderController = new UpdateProviderController(updateProvi
 
 const findByUserIdUseCase = new FindByUserIdUseCase(providerRepository);
 export const findByUserIdController = new FindByUserIdController(findByUserIdUseCase);
+
+export const findByIdsController = new FindByIdsController(findByIdProviderUseCase);

@@ -8,7 +8,8 @@ import {
   findAllProviderController,
   findByIdProviderController,
   findByCategoryProvidersController,
-  findByUserIdController
+  findByUserIdController,
+  findByIdsController
 } from './dependencies';
 import path from 'path';
 
@@ -35,4 +36,5 @@ providerRouter.get('/', findAllProviderController.run.bind(findAllProviderContro
 providerRouter.get('/:id', findByIdProviderController.run.bind(findByIdProviderController));
 providerRouter.post('/categories/', findByCategoryProvidersController.run.bind(findByCategoryProvidersController));
 providerRouter.get('/user/:id', findByUserIdController.run.bind(findByUserIdController));
+providerRouter.post('/ids/', findByIdsController.run.bind(findByIdsController));
 
